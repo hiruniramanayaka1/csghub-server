@@ -20,6 +20,11 @@ jobs:
         with:
           go-version: "1.26"
       - uses: actions/checkout@v7
+      - name: Cache Go modules
+        uses: actions/cache@v4
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('go.mod', 'go.sum') }}
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v8
         with:
@@ -41,6 +46,12 @@ jobs:
 
       - uses: actions/checkout@v7
 
+      - name: Cache Go modules
+        uses: actions/cache@v4
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('go.mod', 'go.sum') }}
+
       - name: Gen
         run: |
           go install github.com/swaggo/swag/cmd/swag@latest
@@ -58,6 +69,12 @@ jobs:
         uses: actions/setup-go@v7
 
       - uses: actions/checkout@v7
+
+      - name: Cache Go modules
+        uses: actions/cache@v4
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('go.mod', 'go.sum') }}
 
       - name: Test
         run: go test ./...
